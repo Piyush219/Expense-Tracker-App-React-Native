@@ -1,45 +1,39 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
+import React from 'react';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreen from './src/screens/HomeScreen';
+import AddExpenseScreen from './src/screens/AddExpenseScreen';
 import {
   SafeAreaProvider,
-  useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+const Stack = createNativeStackNavigator();
 
+export default function App() {
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
+    <SafeAreaProvider style={{ flex: 1 }}>
+      <NavigationContainer theme={defaultTheme}>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{ title: 'My Expenses' }}
+          />
+          <Stack.Screen
+            name="Add"
+            component={AddExpenseScreen}
+            options={{ title: 'Add Expenses' }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
     </SafeAreaProvider>
   );
 }
 
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+const defaultTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: '#ffff', // Or match your app's background color
   },
-});
-
-export default App;
+};
